@@ -132,7 +132,7 @@ void drawMenu() {
   }
 }
 
-// === Выполнение действия по пункту меню ===
+
 void executeAction(String label) {
   if (String(currentMenu->name) == "Wi-Fi spammer" && label == "Start attack") {
     Serial.println("Hello World");
