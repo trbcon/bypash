@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <display.h>
+#include <wi-fi.h>
 
 TFT_eSPI tft = TFT_eSPI();
 
@@ -79,18 +80,13 @@ void handleBack() {
 
 void executeAction(String label) {
   if (String(currentMenu->name) == "Wi-Fi spammer" && label == "Start attack") {
-    Serial.println("Hello World");
-    tft.fillScreen(TFT_BLACK);
-    tft.setCursor(10, 10);
-    tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    tft.println("Hello World");
-    delay(1000);
-    drawMenu(); 
+    StartWiFiAttack()
   } else {
     Serial.print("Выбран пункт: ");
     Serial.println(label);
   }
 }
+
 
 
 // 16.10
