@@ -1,8 +1,17 @@
 #include <TFT_eSPI.h>
 #include <vector>
 #include <map>
+
+//files
 #include <display.h>
 #include <wi-fi.h>
+#include <usb.h>
+#include <bluetooth.h>
+//
+
+
+
+
 
 TFT_eSPI tft = TFT_eSPI();
 
@@ -80,7 +89,9 @@ void handleBack() {
 
 void executeAction(String label) {
   if (String(currentMenu->name) == "Wi-Fi spammer" && label == "Start attack") {
-    StartWiFiAttack()
+    StartWiFiAttack();
+  } else if (String(currentMenu->name) == "Wi-Fi" && label == "Wi-Fi scanner"){
+    WiFiScanner();
   } else {
     Serial.print("Выбран пункт: ");
     Serial.println(label);

@@ -7,3 +7,7 @@ void StartWiFiAttack() {
     delay(1000);
     drawMenu(); 
 }
+
+void WiFiScanner () {
+    // 
+}
