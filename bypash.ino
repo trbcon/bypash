@@ -141,7 +141,7 @@ void executeAction(String label) {
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
     tft.println("Hello World");
     delay(1000);
-    drawMenu(); // Возврат к меню
+    drawMenu(); 
   } else {
     Serial.print("Выбран пункт: ");
     Serial.println(label);
