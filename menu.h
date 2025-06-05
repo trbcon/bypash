@@ -12,7 +12,7 @@ Menu bluetoothMenu;
 Menu* currentMenu = &mainMenu;
 int selectedItem = 0;
 int viewOffset = 0;
-const int maxVisibleItems = 8;
+const int maxVisibleItems = 4;
 
 std::vector<Menu*> menuStack;
 
