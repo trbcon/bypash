@@ -2,19 +2,25 @@
 #include <vector>
 #include <map>
 
+
+TFT_eSPI tft = TFT_eSPI();
+
+
+
 //files
-#include <display.h>
-#include <wi-fi.h>
-#include <usb.h>
 #include <bluetooth.h>
 #include <buttons.h>
+#include <display.h>
+#include <pins.h>
+#include <settings.h>
+#include <usb.h>
+#include <wi-fi.h>
 //
 
 
 
 
 
-TFT_eSPI tft = TFT_eSPI();
 
 
 void setup() {

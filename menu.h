@@ -12,13 +12,13 @@ Menu bluetoothMenu;
 Menu* currentMenu = &mainMenu;
 int selectedItem = 0;
 int viewOffset = 0;
-const int maxVisibleItems = 4;
+const int maxVisibleItems = 15;
 
 std::vector<Menu*> menuStack;
 
 void setupMenus() {
   mainMenu.name = "Main";
-  mainMenu.items = {"Wi-Fi", "Bluetooth", "Pins", "2.4", "1", "2", "3", "4", "5", "asd", "adadasda"};
+  mainMenu.items = {"Wi-Fi", "Bluetooth", "Pins", "2.4", "1", "2", "3", "4", "5", "asd", "Settings"};
   mainMenu.submenus["Wi-Fi"] = &wifiMenu;
   mainMenu.submenus["Bluetooth"] = &bluetoothMenu;
 
@@ -31,4 +31,17 @@ void setupMenus() {
 
   bluetoothMenu.name = "Bluetooth";
   bluetoothMenu.items = {"Bluetooth connect", "Bluetooth scan", "back"};
+
+
+
+  settingsMenu.name = "Settings"
+  settingsMenu.items = {"Display", "Themes", "back"}
+  settingsMenu.submenus["Display"] = &DisplaySettingsMenu;
+
+  DisplaySettingsMenu.name = "Display";
+  DisplaySettingsMenu.items = {"Brigtness", "Rotation", "back"};
+  DisplaySettingsMenu.submenus["Rotation"] = &RotationSettingsMenu;
+
+  RotationSettingsMenu.name = "Rotation";
+  RotationSettingsMenu.items = {"Vertical", "Horizontal", "back"};
 }
