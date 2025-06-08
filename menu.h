@@ -23,7 +23,7 @@ Menu RotationSettingsMenu;
 Menu* currentMenu = &mainMenu;
 int selectedItem = 0;
 int viewOffset = 0;
-const int maxVisibleItems = 15;
+const byte maxVisibleItems = 15;
 
 std::vector<Menu*> menuStack;
 

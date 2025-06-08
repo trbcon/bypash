@@ -6,7 +6,6 @@
 TFT_eSPI tft = TFT_eSPI();
 
 
-
 //files
 #include <bluetooth.h>
 #include <buttons.h>
@@ -16,10 +15,6 @@ TFT_eSPI tft = TFT_eSPI();
 #include <usb.h>
 #include <wi-fi.h>
 //
-
-
-
-
 
 
 
