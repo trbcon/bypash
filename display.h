@@ -1,7 +1,6 @@
 #include <menu.h>
 
 
-
 void drawMenu() {
   int screenWidth = tft.width();
   tft.setTextSize(1);

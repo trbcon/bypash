@@ -8,6 +8,17 @@ Menu mainMenu;
 Menu wifiMenu;
 Menu wifiSpammerMenu;
 Menu bluetoothMenu;
+Menu settingsMenu;
+Menu DisplaySettingsMenu;
+Menu RotationSettingsMenu;
+
+// _____
+// Menu settingsMenu;
+// Menu settingsMenu;
+// Menu settingsMenu;
+// Menu settingsMenu;
+// Menu settingsMenu;
+// _____
 
 Menu* currentMenu = &mainMenu;
 int selectedItem = 0;
