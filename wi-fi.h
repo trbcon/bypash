@@ -6,7 +6,7 @@
 
 extern "C" int ieee80211_raw_frame_sanity_check(uint8_t *frame, int len) {
   return 0;
-
+}
 
 void wsl_bypass_init() {
   // 

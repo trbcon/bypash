@@ -34,7 +34,7 @@ void setupMenus() {
   mainMenu.submenus["Bluetooth"] = &bluetoothMenu;
 
   wifiMenu.name = "Wi-Fi";
-  wifiMenu.items = {"Wi-Fi spammer", "Wi-Fi scanner", "back"};
+  wifiMenu.items = {"Wi-Fi spammer", "Wi-Fi scanner", "W" "back"};
   wifiMenu.submenus["Wi-Fi spammer"] = &wifiSpammerMenu;
 
   wifiSpammerMenu.name = "Wi-Fi spammer";

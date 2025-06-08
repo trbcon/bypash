@@ -28,6 +28,22 @@ void setup() {
 
   setupMenus();
   drawMenu();
+
+
+  wsl_bypass_init();
+
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+
+  // to sniff
+  // esp_wifi_set_promiscuous(true);
+
+  uint8_t mac[6];
+  // esp_wifi_get_mac(WIFI_IF_STA, mac); // MAC устройства
+
+  // wifi_send_broadcast_deauth(mac, 0x07); // reason: Class 3 frame from non-auth STA
+
+
 }
 
 void loop() {

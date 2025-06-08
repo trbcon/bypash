@@ -35,7 +35,7 @@ void setPins(){
     // ANALOG
     for (byte i = DIGITAL_COL; i < PIN_COL; i++)
     {
-        pins[i].name = "anaolog pin%s", i 
+        pins[i].name = "anaolog pin%d", i 
         pins[i].mode = pins[i].modes[2]
         isAnalog = true;
         pins[i].pinNum = pinNumsArray[i];
