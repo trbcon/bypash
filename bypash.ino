@@ -17,6 +17,13 @@ TFT_eSPI tft = TFT_eSPI();
 //
 
 
+void startScreen() {
+  //
+}
+
+
+
+
 
 void setup() {
   Serial.begin(9600);
@@ -25,6 +32,8 @@ void setup() {
   tft.setTextSize(1);  // Text size 1
   tft.setTextColor(TFT_WHITE);
   tft.fillScreen(TFT_BLACK);
+
+  startScreen();
 
   setupMenus();
   drawMenu();
