@@ -38,18 +38,22 @@
 //   }
 
 //   if (running) {
-//     unsigned long elapsed = millis() - startMillis;
-//     unsigned long sec = elapsed / 1000;
-//     unsigned long ms = elapsed % 1000;
 
-//     tft.fillRect(0, 40, 160, 30, TFT_BLACK); // Очистка
-//     tft.setCursor(10, 40);
-//     tft.setTextColor(TFT_GREEN);
-//     tft.printf("%02lu.%03lu сек", sec, ms);
 //   }
 
 //   delay(50);
 // }
+
+void StartStopwatch() {
+    unsigned long elapsed = millis() - startMillis;
+    unsigned long sec = elapsed / 1000;
+    unsigned long ms = elapsed % 1000;
+
+    tft.fillRect(0, 40, 160, 30, TFT_BLACK); // Очистка
+    tft.setCursor(10, 40);
+    tft.setTextColor(TFT_GREEN);
+    tft.printf("%02lu.%03lu сек", sec, ms);
+}
 
 
 
