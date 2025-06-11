@@ -137,7 +137,9 @@ void executeAction(String label) {
   } else if (String(currentMenu->name) == "Wi-Fi" && label == "Wi-Fi scanner"){
     WiFiScanner();
   }else if (String(currentMenu->name) == "Watch" && label == "Stopwatch"){
-    
+    startMillis = millis();
+    StopwatchRunning = true;
+    isMenu = false;
   } else {
     Serial.print("Выбран пункт: ");
     Serial.println(label);

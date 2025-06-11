@@ -44,15 +44,8 @@
 //   delay(50);
 // }
 
+unsigned long startMillis;
 
-    // tft.fillRect(0, 40, 160, 30, TFT_BLACK); // Очистка
-    // tft.setCursor(10, 40);
-    // tft.setTextColor(TFT_GREEN);
-
-
-
-//unsigned long startMillis = 0; //до этого
-// startMillis = millis();
 
 unsigned long StartStopwatch() {
     unsigned long elapsed = millis() - startMillis;
