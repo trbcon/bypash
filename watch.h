@@ -5,24 +5,6 @@
 
 // секундомер
 // #include <TFT_eSPI.h>
-
-// TFT_eSPI tft = TFT_eSPI();
-// bool running = false;
-// unsigned long startMillis = 0;
-
-// void setup() {
-//   Serial.begin(115200);
-//   tft.init();
-//   tft.setRotation(1);
-//   tft.fillScreen(TFT_BLACK);
-//   tft.setTextColor(TFT_GREEN, TFT_BLACK);
-//   tft.setTextSize(3);
-
-//   tft.setCursor(10, 10);
-//   tft.print("Нажми 's' для старта");
-// }
-
-// void loop() {
 //   if (Serial.available()) {
 //     char c = Serial.read();
 //     if (c == 's') {
@@ -34,15 +16,6 @@
 //       tft.setCursor(10, 100);
 //       tft.setTextColor(TFT_RED);
 //       tft.print("СТОП");
-//     }
-//   }
-
-//   if (running) {
-
-//   }
-
-//   delay(50);
-// }
 
 unsigned long startMillis;
 
