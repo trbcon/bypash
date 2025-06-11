@@ -23,6 +23,9 @@ void startScreen() {
 
 
 
+bool isMenu = true;
+bool StopwatchRunning = false;
+
 
 
 void setup() {
@@ -78,7 +81,14 @@ void loop() {
       viewOffset = selectedItem - maxVisibleItems + 1;
     }
 
-    drawMenu();
+    if isMenu
+      drawMenu();
+
+    
+    if (StopwatchRunning) {
+      StopwatchDraw();
+    }
+
   }
 }
 
@@ -110,20 +120,30 @@ void handleBack() {
 }
 
 
+void StopwatchDraw() {
+  tft.fillRect(0, 40, 160, 30, TFT_BLACK);
+  tft.setCursor(10, 40);
+  sec, ms = StartStopwatch();
+  tft.printf("%02lu.%03lu сек", sec, ms);
+  // добавить проверку на нажатие кнопок(ок для запуска, влево для выхода)
+}
 
 
 
+// -------------------------------
 void executeAction(String label) {
   if (String(currentMenu->name) == "Wi-Fi spammer" && label == "Start attack") {
     StartWiFiAttack();
   } else if (String(currentMenu->name) == "Wi-Fi" && label == "Wi-Fi scanner"){
     WiFiScanner();
+  }else if (String(currentMenu->name) == "Watch" && label == "Stopwatch"){
+    
   } else {
     Serial.print("Выбран пункт: ");
     Serial.println(label);
   }
 }
-
+// -------------------------------
 
 
 // 16.10
