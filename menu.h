@@ -11,9 +11,9 @@ Menu bluetoothMenu;
 Menu settingsMenu;
 Menu DisplaySettingsMenu;
 Menu RotationSettingsMenu;
+Menu WatchMenu;
 
 // _____
-// Menu settingsMenu;
 // Menu settingsMenu;
 // Menu settingsMenu;
 // Menu settingsMenu;
@@ -29,7 +29,7 @@ std::vector<Menu*> menuStack;
 
 void setupMenus() {
   mainMenu.name = "Main";
-  mainMenu.items = {"Wi-Fi", "Bluetooth", "Pins", "2.4", "1", "2", "3", "4", "5", "asd", "Settings"};
+  mainMenu.items = {"Wi-Fi", "Bluetooth", "Pins", "2.4", "Watch", "2", "3", "4", "5", "asd", "Settings"};
   mainMenu.submenus["Wi-Fi"] = &wifiMenu;
   mainMenu.submenus["Bluetooth"] = &bluetoothMenu;
 
@@ -43,10 +43,11 @@ void setupMenus() {
   bluetoothMenu.name = "Bluetooth";
   bluetoothMenu.items = {"BLE spam", "Bluetooth scan", "back"};
 
-
+  WatchMenu.name = "Watch";
+  WatchMenu.items = {"Stopwatch", "Timer", "back"}
 
   settingsMenu.name = "Settings"
-  settingsMenu.items = {"Display", "Themes", "back"}
+  settingsMenu.items = {"Display", "Themes", "Time and Data", "back"}
   settingsMenu.submenus["Display"] = &DisplaySettingsMenu;
 
   DisplaySettingsMenu.name = "Display";

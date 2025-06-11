@@ -44,6 +44,10 @@
 //   delay(50);
 // }
 
+
+
+//unsigned long startMillis = 0; //до этого
+// startMillis = millis();
 void StartStopwatch() {
     unsigned long elapsed = millis() - startMillis;
     unsigned long sec = elapsed / 1000;
