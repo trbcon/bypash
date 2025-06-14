@@ -83,12 +83,10 @@ void loop() {
 
     if isMenu
       drawMenu();
+  }
 
-    
-    if (StopwatchRunning) {
-      StopwatchDraw();
-    }
-
+  if (StopwatchRunning) {
+    StopwatchDraw();
   }
 }
 
