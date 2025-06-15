@@ -1,10 +1,12 @@
 
 
-std::string notif[] = {}
+std::string notif[] = {};
+int notifSize;
 
-void setNotification(){
-    notifSize = sizeof(notif) / sizeof(std::string)
-    notif
+
+void setNotification(std::string StrNotification){
+    notifSize = sizeof(notif) / sizeof(std::string);
+    notif[notifSize] = StrNotification;
 }
 
 
@@ -16,5 +18,3 @@ void printNotifications(){
 void deleteNotification(){
 
 }
-
-
