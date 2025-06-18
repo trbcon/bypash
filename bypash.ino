@@ -24,7 +24,8 @@ void startScreen() {
 
 
 bool isMenu = true;
-bool StopwatchRunning = false;
+bool isStopwatchRunning = false;
+bool 
 
 
 
@@ -62,31 +63,36 @@ void loop() {
   if (Serial.available()) {
     String command = Serial.readStringUntil('\n');
     command.trim();
+    
+    if isMenu {
+      if (command == "up") {
+        selectedItem--;
+        if (selectedItem < 0) selectedItem = currentMenu->items.size() - 1;
+      } else if (command == "down") {
+        selectedItem++;
+        if (selectedItem >= currentMenu->items.size()) selectedItem = 0;
+      } else if (command == "ok") {
+        handleOk();
+      } else if (command == "back") {
+        handleBack();
+      }
 
-    if (command == "up") {
-      selectedItem--;
-      if (selectedItem < 0) selectedItem = currentMenu->items.size() - 1;
-    } else if (command == "down") {
-      selectedItem++;
-      if (selectedItem >= currentMenu->items.size()) selectedItem = 0;
-    } else if (command == "ok") {
-      handleOk();
-    } else if (command == "back") {
-      handleBack();
-    }
+      if (selectedItem < viewOffset) {
+        viewOffset = selectedItem;
+      } else if (selectedItem >= viewOffset + maxVisibleItems) {
+        viewOffset = selectedItem - maxVisibleItems + 1;
+      }
 
-    if (selectedItem < viewOffset) {
-      viewOffset = selectedItem;
-    } else if (selectedItem >= viewOffset + maxVisibleItems) {
-      viewOffset = selectedItem - maxVisibleItems + 1;
-    }
-
-    if isMenu
       drawMenu();
+    }
+  } 
+
+  if isStopwatchRunning {
+    StopwatchDraw();
   }
 
-  if (StopwatchRunning) {
-    StopwatchDraw();
+  if Pins{
+    pass
   }
 }
 
@@ -134,11 +140,14 @@ void executeAction(String label) {
     StartWiFiAttack();
   } else if (String(currentMenu->name) == "Wi-Fi" && label == "Wi-Fi scanner"){
     WiFiScanner();
-  }else if (String(currentMenu->name) == "Watch" && label == "Stopwatch"){
+  } else if (String(currentMenu->name) == "Watch" && label == "Stopwatch"){
     startMillis = millis();
     StopwatchRunning = true;
     isMenu = false;
-  } else {
+  } else if String(currentMenu->name) == "Pins"{
+    
+  }
+  else {
     Serial.print("Выбран пункт: ");
     Serial.println(label);
   }
@@ -146,7 +155,3 @@ void executeAction(String label) {
 // -------------------------------
 
 
-// 16.10
-// 47.00
-// 56.20
-// 58.00

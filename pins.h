@@ -51,6 +51,11 @@ void pirntPins() {
     
 }
 
+void pinMenuControl(){
+    
+}
+
+
 // void pinsEdit() {
 //   
 // }
