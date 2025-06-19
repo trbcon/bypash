@@ -8,12 +8,15 @@ TFT_eSPI tft = TFT_eSPI();
 
 //files
 #include <bluetooth.h>
-#include <buttons.h>
 #include <display.h>
 #include <pins.h>
 #include <settings.h>
 #include <usb.h>
 #include <wi-fi.h>
+//
+
+// buttons
+#include <buttons.h>
 //
 
 
@@ -25,7 +28,7 @@ void startScreen() {
 
 bool isMenu = true;
 bool isStopwatchRunning = false;
-bool 
+bool isPinsMenu = false;
 
 
 
@@ -41,6 +44,11 @@ void setup() {
 
   setupMenus();
   drawMenu();
+  ButtonSetup();
+
+
+
+
 
 
   wsl_bypass_init();
@@ -60,6 +68,8 @@ void setup() {
 }
 
 void loop() {
+  ButtonUpdate();
+
   if (Serial.available()) {
     String command = Serial.readStringUntil('\n');
     command.trim();
@@ -85,13 +95,13 @@ void loop() {
 
       drawMenu();
     }
-  } 
+  }
 
   if isStopwatchRunning {
     StopwatchDraw();
   }
 
-  if Pins{
+  if isPinsMenu {
     pass
   }
 }
@@ -144,8 +154,8 @@ void executeAction(String label) {
     startMillis = millis();
     StopwatchRunning = true;
     isMenu = false;
-  } else if String(currentMenu->name) == "Pins"{
-    
+  } else if String(currentMenu->name) == "Pins" {
+    isPinsMenu = true;
   }
   else {
     Serial.print("Выбран пункт: ");
