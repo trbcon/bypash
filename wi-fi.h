@@ -1,12 +1,12 @@
-#pragma once
+// #pragma once
 #include <Arduino.h>
 #include <esp_wifi.h>
 #include <string.h>
 
 
-extern "C" int ieee80211_raw_frame_sanity_check(uint8_t *frame, int len) {
-  return 0;
-}
+// extern "C" int ieee80211_raw_frame_sanity_check(uint8_t *frame, int len) {
+//   return 0;
+// }
 
 void wsl_bypass_init() {
   // 

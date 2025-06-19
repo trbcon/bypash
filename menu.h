@@ -32,6 +32,9 @@ void setupMenus() {
   mainMenu.items = {"Wi-Fi", "Bluetooth", "Pins", "2.4", "Watch", "2", "3", "4", "5", "asd", "Settings"};
   mainMenu.submenus["Wi-Fi"] = &wifiMenu;
   mainMenu.submenus["Bluetooth"] = &bluetoothMenu;
+  mainMenu.submenus["Wi-Fi spammer"] = &wifiSpammerMenu;
+  mainMenu.submenus["Watch"] = &WatchMenu;
+  mainMenu.submenus["Settings"] = &settingsMenu;
 
   wifiMenu.name = "Wi-Fi";
   wifiMenu.items = {"Wi-Fi spammer", "Wi-Fi scanner", "W", "back"};
@@ -44,10 +47,10 @@ void setupMenus() {
   bluetoothMenu.items = {"BLE spam", "Bluetooth scan", "back"};
 
   WatchMenu.name = "Watch";
-  WatchMenu.items = {"Stopwatch", "Timer", "back"}
+  WatchMenu.items = {"Stopwatch", "Timer", "back"};
 
-  settingsMenu.name = "Settings"
-  settingsMenu.items = {"Display", "Themes", "Time and Data", "back"}
+  settingsMenu.name = "Settings";
+  settingsMenu.items = {"Display", "Themes", "Time and Data", "back"};
   settingsMenu.submenus["Display"] = &DisplaySettingsMenu;
 
   DisplaySettingsMenu.name = "Display";
