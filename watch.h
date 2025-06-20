@@ -1,7 +1,5 @@
 // #pragma once
 #include <Wire.h>
-#include "RTClib.h"
-
 
 // секундомер
 // #include <TFT_eSPI.h>
@@ -19,13 +17,28 @@
 
 unsigned long startMillis;
 
+struct TimeResult {
+    unsigned long sec;
+    unsigned long ms;
+};
 
-unsigned long StartStopwatch() {
+
+TimeResult StartStopwatch() {
     unsigned long elapsed = millis() - startMillis;
-    unsigned long sec = elapsed / 1000;
-    unsigned long ms = elapsed % 1000;
-    return sec, ms;
+    TimeResult result;
+    result.sec = elapsed / 1000;
+    result.ms = elapsed % 1000;
+    return result;
 }
+
+
+
+// unsigned long StartStopwatch() {
+//     unsigned long elapsed = millis() - startMillis;
+//     unsigned long sec = elapsed / 1000;
+//     unsigned long ms = elapsed % 1000;
+//     return sec, ms;
+// }
 
 
 

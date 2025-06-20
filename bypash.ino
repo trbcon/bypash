@@ -92,7 +92,7 @@ void setup() {
   // to sniff
   // esp_wifi_set_promiscuous(true);
 
-  uint8_t mac[6];
+  // uint8_t mac[6];
   // esp_wifi_get_mac(WIFI_IF_STA, mac); // MAC устройства
 
   // wifi_send_broadcast_deauth(mac, 0x07); // reason: Class 3 frame from non-auth STA
@@ -127,6 +127,11 @@ void loop() {
       }
 
       drawMenu();
+    } else if (isStopwatchRunning){
+      if (command == "ok") {
+        isStopwatchRunning = false;
+        isMenu = true;
+      }
     }
   }
 
@@ -142,12 +147,16 @@ void loop() {
 
 
 
+
+
+
+
+
 void StopwatchDraw() {
   tft.fillRect(0, 40, 160, 30, TFT_BLACK);
   tft.setCursor(10, 40);
-  int sec, ms;
-  sec, ms = StartStopwatch();
-  tft.printf("%02lu.%03lu сек", sec, ms);
+  TimeResult time = StartStopwatch();
+  tft.printf("%02lu.%03lu сек", time.sec, time.ms);
   // добавить проверку на нажатие кнопок(ок для запуска, влево для выхода)
 }
 

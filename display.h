@@ -1,5 +1,17 @@
 #include <menu.h>
+#include <RTClib.h>
 
+RTC_DS3231 rtc;
+
+void WatchInit() {
+  try {
+    rtc.begin();
+  } 
+}
+
+void WatchDraw() {
+  DateTime now = rtc.now();
+}
 
 void drawMenu() {
   int screenWidth = tft.width();
