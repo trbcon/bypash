@@ -6,7 +6,10 @@ RTC_DS3231 rtc;
 void WatchInit() {
   try {
     rtc.begin();
-  } 
+    // tft.setCursor((screenWidth - tft.textWidth(currentMenu->name)) / 2, 0);
+  } catch (error_t) {
+    return;
+  }
 }
 
 void WatchDraw() {
@@ -17,7 +20,7 @@ void drawMenu() {
   int screenWidth = tft.width();
   tft.setTextSize(1);
   tft.fillScreen(TFT_BLACK);
-  tft.setCursor((screenWidth - tft.textWidth(currentMenu->name)) / 2, 0);
+  tft.setCursor(0, 0);
   tft.setTextColor(TFT_CYAN, TFT_BLACK);
   tft.println(currentMenu->name);
   // tft.setTextSize(2);

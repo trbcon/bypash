@@ -65,6 +65,12 @@ void onDoubleClick(const char* name) {
     
   } else if (strcmp(name, "OK") == 0) {
     
+  } else if (strcmp(name, "LEFT") == 0) {
+    if (isMenu) {
+      handleBack();
+    }
+  } else if (strcmp(name, "RIGHT") == 0) {
+
   }
 }
 
