@@ -1,29 +1,41 @@
+#include <vector>
+#include <string>
 
+struct Notification {
+    std::string text;
+    unsigned long startTime;
+};
 
-std::string notif[] = {};
-int notifSize;
-unsigned long notifStartTime;
+std::vector<Notification> notifications;
 
-
-
-
-void setNotification(std::string StrNotification){
-    notifSize = sizeof(notif) / sizeof(std::string);
-    notif[notifSize] = StrNotification;
-    deleteNotification();
+void setNotification(const std::string& strNotification) {
+    Notification n;
+    n.text = strNotification;
+    n.startTime = millis();
+    notifications.push_back(n);
 }
 
+void clearNotifications() {
+    notifications.clear();
+}
 
-
-void printNotifications(){
+void printNotifications() {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    for(int i; i < notifSize; i++){
-        tft.setCursor(110, i*8);
-        tft.print(notif[i]);
-    }
-}
+    int y = 0;
+    unsigned long now = millis();
 
-void deleteNotification() {
-    notifStartTime = millis();
-    // if (millis() - startTime >= 3000) {
+    // Новый вектор для живых уведомлений
+    std::vector<Notification> stillActive;
+
+    for (auto& notif : notifications) {
+        if (now - notif.startTime < 7000) {  // 7 секунд живёт
+            tft.setCursor(110, y * 8);
+            tft.print(notif.text.c_str());
+            stillActive.push_back(notif);
+            y++;
+        }
+        // Иначе мы не добавляем в новый список = удаляем
+    }
+
+    notifications = stillActive; // Обновляем список активных
 }
