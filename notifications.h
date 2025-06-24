@@ -21,14 +21,13 @@ void clearNotifications() {
 
 void printNotifications() {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    int y = 0;
+    int y = 10;
     unsigned long now = millis();
 
-    // Новый вектор для живых уведомлений
     std::vector<Notification> stillActive;
 
     for (auto& notif : notifications) {
-        if (now - notif.startTime < 7000) {  // 7 секунд живёт
+        if (now - notif.startTime < 4000) {  // 7 секунд живёт
             tft.setCursor(110, y * 8);
             tft.print(notif.text.c_str());
             stillActive.push_back(notif);

@@ -3,10 +3,37 @@
 
 RTC_DS3231 rtc;
 
+
+// int hour = now.hour();
+// bool pm = false;
+
+// if(hour > 12) {
+//   hour -= 12;
+//   pm = true;
+// }
+// else if(hour == 0) {
+//   hour = 12;
+// }
+// else if(hour == 12) {
+//   pm = true;
+// }
+
+// if(hour < 10) display.print('0');
+// display.print(hour);
+// display.print(':');
+// if(now.minute() < 10) display.print('0');
+// display.print(now.minute());
+// display.print(pm ? " PM" : " AM");
+
+
 void WatchInit() {
   try {
     rtc.begin();
-    // tft.setCursor((screenWidth - tft.textWidth(currentMenu->name)) / 2, 0);
+    if (rtc.lostPower()) {
+      rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    }
+    String hourStr, minStr, NowTimeStr;
+  // rtc.setTime(2025, 1, 30, 12, 45, 0); // установить время вручную
   } catch (error_t) {
     return;
   }
@@ -14,7 +41,24 @@ void WatchInit() {
 
 void WatchDraw() {
   DateTime now = rtc.now();
+  NowTimeStr = "";
+  // Форматирование часов
+  if(now.hour() < 10) NowTimeStr += "0";
+  NowTimeStr += String(now.hour()) + ":";
+
+  // Форматирование минут
+  if(now.minute() < 10) NowTimeStr += "0";;
+  NowTimeStr += String(now.minute())
+
+  tft.setCursor((screenWidth - tft.textWidth(NowTimeStr)) / 2, 0);
+  tft.println(NowTimeStr);
 }
+
+
+
+
+
+
 
 void drawMenu() {
   int screenWidth = tft.width();

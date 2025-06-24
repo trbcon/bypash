@@ -5,12 +5,15 @@
 
 TFT_eSPI tft = TFT_eSPI();
 
+// settings
+#include <settings.h>
+#include <notifications.h>
+#include <display.h>
+//
 
 //files
 #include <bluetooth.h>
-#include <display.h>
 #include <pins.h>
-#include <settings.h>
 #include <usb.h>
 #include <wi-fi.h>
 #include <watch.h>
