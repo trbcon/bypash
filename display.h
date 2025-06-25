@@ -25,6 +25,7 @@ RTC_DS3231 rtc;
 // display.print(now.minute());
 // display.print(pm ? " PM" : " AM");
 
+String NowTimeStr;
 
 void WatchInit() {
   try {
@@ -48,9 +49,9 @@ void WatchDraw() {
 
   // Форматирование минут
   if(now.minute() < 10) NowTimeStr += "0";;
-  NowTimeStr += String(now.minute())
+  NowTimeStr += String(now.minute());
 
-  tft.setCursor((screenWidth - tft.textWidth(NowTimeStr)) / 2, 0);
+  tft.setCursor((160 - tft.textWidth(NowTimeStr)) / 2, 0);
   tft.println(NowTimeStr);
 }
 

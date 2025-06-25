@@ -9,6 +9,7 @@ TFT_eSPI tft = TFT_eSPI();
 #include <settings.h>
 #include <notifications.h>
 #include <display.h>
+#include <buttons.h>
 //
 
 //files
