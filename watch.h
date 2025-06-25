@@ -15,7 +15,7 @@
 //       tft.setTextColor(TFT_RED);
 //       tft.print("СТОП");
 
-unsigned long startMillis;
+extern unsigned long startMillis;
 
 struct TimeResult {
     unsigned long sec;

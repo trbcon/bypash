@@ -5,6 +5,10 @@
 
 TFT_eSPI tft = TFT_eSPI();
 
+bool isMenu = true;
+bool isStopwatchRunning = false;
+bool isPinsMenu = false;
+
 // settings
 #include <settings.h>
 #include <notifications.h>
@@ -21,11 +25,9 @@ TFT_eSPI tft = TFT_eSPI();
 //
 
 
-bool isMenu = true;
-bool isStopwatchRunning = false;
-bool isPinsMenu = false;
 
 
+unsigned long startMillis;
 
 
 void startScreen() {
@@ -62,12 +64,6 @@ void handleBack() {
 }
 
 
-
-// buttons
-#include <buttons.h>
-//
-
-
 void setup() {
   Serial.begin(9600);
   tft.init();
@@ -85,7 +81,7 @@ void setup() {
   setPins();
   // printPins();
 
-
+  WatchInit();
 
 
   // wsl_bypass_init();
@@ -106,7 +102,8 @@ void setup() {
 
 void loop() {
   ButtonUpdate();
-
+  WatchDraw();
+  
   if (Serial.available()) {
     String command = Serial.readStringUntil('\n');
     command.trim();
@@ -143,9 +140,9 @@ void loop() {
     StopwatchDraw();
   }
 
-  if (isPinsMenu) {
+  // if (isPinsMenu) {
     
-  }
+  // }
 }
 
 

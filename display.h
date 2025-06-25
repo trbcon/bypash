@@ -28,15 +28,12 @@ RTC_DS3231 rtc;
 String NowTimeStr;
 
 void WatchInit() {
-  try {
-    rtc.begin();
-    if (rtc.lostPower()) {
-      rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    }
-    String hourStr, minStr, NowTimeStr;
-  // rtc.setTime(2025, 1, 30, 12, 45, 0); // установить время вручную
-  } catch (error_t) {
+  if (!rtc.begin()) {
+    Serial.println("RTC initialization failed");
     return;
+  }
+  if (rtc.lostPower()) {
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   }
 }
 
@@ -48,7 +45,7 @@ void WatchDraw() {
   NowTimeStr += String(now.hour()) + ":";
 
   // Форматирование минут
-  if(now.minute() < 10) NowTimeStr += "0";;
+  if(now.minute() < 10) NowTimeStr += "0";
   NowTimeStr += String(now.minute());
 
   tft.setCursor((160 - tft.textWidth(NowTimeStr)) / 2, 0);

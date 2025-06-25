@@ -7,6 +7,13 @@
 #define LONG_PRESS_TIME   500
 #define DOUBLE_CLICK_TIME 300
 
+extern bool isMenu;
+extern Menu* currentMenu;
+extern int selectedItem;
+extern void handleBack();
+extern void handleOk();
+
+
 struct ButtonState {
   int pin;
   bool isPressed = false;
