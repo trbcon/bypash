@@ -27,10 +27,15 @@ RTC_DS3231 rtc;
 
 String NowTimeStr;
 
+extern bool isWatchOK;
+
 void WatchInit() {
   if (!rtc.begin()) {
     Serial.println("RTC initialization failed");
+    
     return;
+  } else {
+    isWatchOK = true;
   }
   if (rtc.lostPower()) {
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));

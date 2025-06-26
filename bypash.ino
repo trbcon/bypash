@@ -8,6 +8,7 @@ TFT_eSPI tft = TFT_eSPI();
 bool isMenu = true;
 bool isStopwatchRunning = false;
 bool isPinsMenu = false;
+bool isWatchOK = false;
 
 // settings
 #include <settings.h>
