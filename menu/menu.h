@@ -18,6 +18,9 @@ extern Menu settingsMenu;
 extern Menu DisplaySettingsMenu;
 extern Menu RotationSettingsMenu;
 extern Menu WatchMenu;
+extern Menu ThemesMenu;
+extern Menu TADMenu;
+
 
 extern Menu* currentMenu;
 extern int selectedItem;

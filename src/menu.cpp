@@ -8,6 +8,8 @@ Menu settingsMenu;
 Menu DisplaySettingsMenu;
 Menu RotationSettingsMenu;
 Menu WatchMenu;
+Menu ThemesMenu;
+Menu TADMenu;
 
 
 Menu* currentMenu = &mainMenu;
@@ -41,6 +43,11 @@ void setupMenus() {
   settingsMenu.name = "Settings";
   settingsMenu.items = {"Display", "Themes", "Time and Data", "back"};
   settingsMenu.submenus["Display"] = &DisplaySettingsMenu;
+  settingsMenu.submenus["Themes"] = &ThemesMenu;
+  settingsMenu.submenus["Time and Data"] = &TADMenu;
+
+  ThemesMenu.name = "Themes";
+  ThemesMenu.items = {"Dark(default)", "Light", "back"};
 
   DisplaySettingsMenu.name = "Display";
   DisplaySettingsMenu.items = {"Brigtness", "Rotation", "back"};

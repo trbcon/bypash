@@ -15,6 +15,7 @@
 #include "../config/settings.h"
 
 bool isMenu = true;
+bool isNotifications = false;
 bool isStopwatchRunning = false;
 bool isPinsMenu = false;
 bool isWatchOK = false;
@@ -42,6 +43,7 @@ extern void ButtonUpdate();
 extern void setPins();
 extern void WatchInit();
 void executeAction(String label);
+void selectMenu(bool &isSomething);
 
 
 
@@ -50,7 +52,13 @@ unsigned long startMillis;
 
 
 void startScreen() {
-  //
+  tft.fillScreen(TFT_BLACK);
+  int LX1, LX2, LX3, LY1, LY2, LY3;
+  LX1 = 79; LX2 = 43; LX3 = 116; LY1 = 10; LY2 = 118; LY3 = 43;
+  tft.drawLine(LX1, LY1, LX1, LY2, TFT_WHITE);
+  tft.drawLine(LX1 + 1, LY1, LX1 + 1, LY2, TFT_WHITE);
+  tft.drawLine(LX2, LY3, LX3, LY3, TFT_WHITE);
+  tft.drawLine(LX2, LY3+1, LX3, LY3+1, TFT_WHITE);
 }
 
 void StopwatchDraw() {
@@ -106,6 +114,17 @@ void executeAction(String label) {
   }
 }
 // -------------------------------
+
+
+void selectMenu(bool &isSomething) {
+  isMenu = false;
+  isNotifications = false;
+  isStopwatchRunning = false;
+  isPinsMenu = false;
+  isWatchOK = false;
+
+  isSomething = true;
+}
 
 
 void setup() {
@@ -184,5 +203,7 @@ void loop() {
     
   // }
 }
+
+
 
 

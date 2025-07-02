@@ -21,33 +21,61 @@ void ButtonSetup() {
 }
 
 void onSingleClick(const char* name) {
-  if      (strcmp(name, "UP") == 0 && isMenu) {
-    if (--selectedItem < 0) selectedItem = currentMenu->items.size() - 1;
+  if (strcmp(name, "UP") == 0) {
+    if (isMenu) {
+      selectedItem--;
+      if (selectedItem < 0) selectedItem = currentMenu->items.size() - 1;
+    }
   }
-  else if (strcmp(name, "DOWN") == 0 && isMenu) {
-    if (++selectedItem >= currentMenu->items.size()) selectedItem = 0;
+  else if (strcmp(name, "DOWN") == 0) {
+    if (isMenu){
+      selectedItem++;
+      if (selectedItem >= currentMenu->items.size()) selectedItem = 0;
+    } 
   }
-  else if (strcmp(name, "LEFT") == 0 && isMenu) {
-    handleBack();
+  else if (strcmp(name, "LEFT") == 0) {
+    if (isMenu) {
+      handleBack();
+    }
   }
-  else if ((strcmp(name, "RIGHT") == 0 || strcmp(name, "OK") == 0) && isMenu) {
-    handleOk();
+  else if (strcmp(name, "RIGHT") == 0) {
+    if (isMenu) handleOk();
+  }
+  else if (strcmp(name, "OK") == 0) {
+    if (isMenu) handleOk();
   }
 }
 
 void onDoubleClick(const char* name) {
-  if (strcmp(name, "LEFT") == 0 && isMenu) {
-    handleBack();
+  if (strcmp(name, "UP") == 0) {
+  }
+  else if (strcmp(name, "DOWN") == 0) {
+  }
+  else if (strcmp(name, "LEFT") == 0) {
+  }
+  else if (strcmp(name, "RIGHT") == 0) {
+  }
+  else if (strcmp(name, "OK") == 0) {
   }
   // добавить остальные двойные клики по желанию
 }
 
 void onLongPress(const char* name) {
   if (strcmp(name, "UP") == 0) {
-    // долгий UP
+  }
+  else if (strcmp(name, "DOWN") == 0) {
+    if (isNotifications) {
+
+    } else {
+      notificationsMenu();
+      selectMenu(isNotifications);
+    }
+  }
+  else if (strcmp(name, "LEFT") == 0) {
+  }
+  else if (strcmp(name, "RIGHT") == 0) {
   }
   else if (strcmp(name, "OK") == 0) {
-    // долгий OK
   }
 }
 

@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <cstring>
 #include "../menu/menu.h"
+#include "../notifications/notifications.h"
 
 #define BTN_UP           32
 #define BTN_DOWN         33
@@ -13,10 +14,13 @@
 #define DOUBLE_CLICK_TIME 300
 
 extern bool        isMenu;
+extern bool        isNotifications;
 extern Menu*       currentMenu;
 extern int         selectedItem;
 extern void        handleBack();
 extern void        handleOk();
+extern void        notificationsMenu();
+extern void        selectMenu(bool &isSomething);
 
 struct ButtonState {
   int              pin;
