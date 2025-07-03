@@ -9,8 +9,6 @@ struct Notification {
 
 extern std::vector<Notification> notifications;
 
-extern selectMenu(bool &isSomething);
-
 void setNotification(const std::string& strNotification);
 void clearNotifications();
 // void printNotifications();

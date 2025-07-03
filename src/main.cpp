@@ -15,7 +15,7 @@
 #include "../config/settings.h"
 
 bool isMenu = true;
-bool isNotifications = false;
+// bool isNotifications = false;
 bool isStopwatchRunning = false;
 bool isPinsMenu = false;
 bool isWatchOK = false;
@@ -118,11 +118,13 @@ void executeAction(String label) {
 
 void selectMenu(bool &isSomething) {
   isMenu = false;
-  isNotifications = false;
+  // isNotifications = false;
   isStopwatchRunning = false;
   isPinsMenu = false;
   isWatchOK = false;
 
+
+  
   isSomething = true;
 }
 

@@ -1,4 +1,5 @@
 #include "../buttons/buttons.h"
+#include "../keyboard/keyboard.h"
 #include <Arduino.h>
 #include <cstring>
 
@@ -21,6 +22,18 @@ void ButtonSetup() {
 }
 
 void onSingleClick(const char* name) {
+  if (keyboardActive) {
+    if (strcmp(name, "UP") == 0 && selected_row > 0) selected_row--;
+    else if (strcmp(name, "DOWN") == 0 && selected_row < key_rows - 1) selected_row++;
+    else if (strcmp(name, "LEFT") == 0 && selected_col > 0) selected_col--;
+    else if (strcmp(name, "RIGHT") == 0 && selected_col < max_cols[selected_row] - 1) selected_col++;
+    else if (strcmp(name, "OK") == 0) perform_ok_action();
+
+    draw_keyboard();
+    return;  // меню не трогаем
+  }
+
+
   if (strcmp(name, "UP") == 0) {
     if (isMenu) {
       selectedItem--;
@@ -68,7 +81,7 @@ void onLongPress(const char* name) {
 
     } else {
       notificationsMenu();
-      selectMenu(isNotifications);
+      // selectMenu(isNotifications);
     }
   }
   else if (strcmp(name, "LEFT") == 0) {
