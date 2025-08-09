@@ -8,7 +8,6 @@ std::vector<Notification> notifications;
 void setNotification(const std::string& strNotification) {
     Notification n;
     n.text = strNotification;
-    n.startTime = millis();
     notifications.push_back(n);
 }
 

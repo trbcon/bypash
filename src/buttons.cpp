@@ -1,5 +1,5 @@
 #include "../buttons/buttons.h"
-#include "../keyboard/keyboard.h"
+#include "../display/keyboard.h"
 #include <Arduino.h>
 #include <cstring>
 
@@ -78,9 +78,9 @@ void onLongPress(const char* name) {
   }
   else if (strcmp(name, "DOWN") == 0) {
     if (isNotifications) {
-
+      isNotifications = false;
     } else {
-      notificationsMenu();
+      isNotifications = true;
       // selectMenu(isNotifications);
     }
   }

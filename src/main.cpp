@@ -7,6 +7,7 @@
 #include "../notifications/notifications.h"
 #include "../buttons/buttons.h"
 #include "../display/display.h"
+#include "../display/keyboard.h"
 #include "../sensors/pins.h"
 #include "../sensors/watch.h"
 #include "../wireless/wi-fi.h"
@@ -14,11 +15,15 @@
 #include "../wired/usb.h"
 #include "../config/settings.h"
 
+
+//PROGS
 bool isMenu = true;
-// bool isNotifications = false;
 bool isStopwatchRunning = false;
 bool isPinsMenu = false;
 bool isWatchOK = false;
+
+//SERVICES
+bool isNotifications = false;
 
 // // settings
 // #include <settings.h>
@@ -197,8 +202,14 @@ void loop() {
     }
   }
 
+  //Stopwatch(секундомер ебаный) (надо переписать его будет)
   if (isStopwatchRunning) {
     StopwatchDraw();
+  }
+
+  //notifications
+  if (isNotifications) {
+    notificationsMenu();
   }
 
   // if (isPinsMenu) {

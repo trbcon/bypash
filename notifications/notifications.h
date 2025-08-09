@@ -4,7 +4,7 @@
 
 struct Notification {
     std::string text;
-    unsigned long startTime;
+    // unsigned long startTime;
 };
 
 extern std::vector<Notification> notifications;

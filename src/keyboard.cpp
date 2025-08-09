@@ -1,6 +1,5 @@
-// #include <TFT_eSPI.h>
+// === include/buttons.h ===
 #pragma once
-#include <SPI.h>
 
 #define BTN_UP     12
 #define BTN_DOWN   13
@@ -8,15 +7,36 @@
 #define BTN_RIGHT  27
 #define BTN_OK     26
 
-TFT_eSPI tft = TFT_eSPI();
+#define LONG_PRESS_TIME 500
+#define DOUBLE_CLICK_TIME 300
 
-// Раскладки
+struct ButtonState {
+  int pin;
+  bool isPressed = false;
+  bool longPressHandled = false;
+  bool waitingDouble = false;
+  unsigned long pressStartTime = 0;
+  unsigned long lastReleaseTime = 0;
+};
+
+void ButtonSetup();
+void ButtonUpdate();
+
+
+// === src/keyboard.cpp ===
+#include "../display/keyboard.h"
+#include "../display/display.h"
+
+// TFT_eSPI tft = TFT_eSPI();
+
+bool isSpecialMenu = false;
+
 const char* layout_en[] = {
   "1234567890-=",
   "qwertyuiop[]",
   "asdfghjkl;'\\",
   "zxcvbnm,./",
-  "[SHIFT][SPACE][BKSP][ENT]"
+  "[SHIFT][SPACE][BKSP][ENT][LANG][SYM]"
 };
 
 const char* layout_ru[] = {
@@ -24,60 +44,50 @@ const char* layout_ru[] = {
   "йцукенгшщзхъ",
   "фывапролджэ\\",
   "ячсмитьбю.",
-  "[SHIFT][SPACE][BKSP][ENT]"
+  "[SHIFT][SPACE][BKSP][ENT][LANG][SYM]"
+};
+
+const char* layout_special[] = {
+  "!@#$%^&*()_+",
+  "{}[]<>~`|\\",
+  ":;\"',.?/=",
+  "←→↑↓✓✔✖★",
+  "[ABC]"
 };
 
 const int key_rows = 5;
-const int max_cols[] = {12, 12, 12, 11, 4};
+const int max_cols[] = {12, 12, 12, 11, 6};
 
 int selected_row = 0;
 int selected_col = 0;
 bool shift = false;
 bool isRussian = false;
+bool keyboardActive = false;
 
 String input_text = "";
 int cursor_pos = 0;
 String current_char = "";
 
-unsigned long last_action = 0;
-unsigned long ok_hold_start = 0;
-bool ok_held = false;
-
-bool button(int pin) {
-  return digitalRead(pin) == LOW;
-}
-
-char get_shifted_char(char c) {
-  switch (c) {
-    case '1': return '!';
-    case '2': return '@';
-    case '3': return '#';
-    case '4': return '$';
-    case '5': return '%';
-    case '6': return '^';
-    case '7': return '&';
-    case '8': return '*';
-    case '9': return '(';
-    case '0': return ')';
-    case '-': return '_';
-    case '=': return '+';
-    case '[': return '{';
-    case ']': return '}';
-    case ';': return ':';
-    case '\'': return '"';
-    case ',': return '<';
-    case '.': return '>';
-    case '/': return '?';
-    case '\\': return '|';
-    default: return isAlpha(c) ? toupper(c) : c;
-  }
+char get_shifted_char_ru(char c) {
+  if (c >= 'а' && c <= 'я') return c - ('а' - 'А');
+  if (c == 'ё') return 'Ё';
+  return c;
 }
 
 char getCharAt(int row, int col) {
+  if (isSpecialMenu) {
+    const char* layout = layout_special[row];
+    return layout[col];
+  }
+
   const char* layout = isRussian ? layout_ru[row] : layout_en[row];
   if (row < key_rows - 1) {
     char ch = layout[col];
-    return shift ? get_shifted_char(ch) : ch;
+    if (shift) {
+      if (isRussian) return get_shifted_char_ru(ch);
+      return isAlpha(ch) ? toupper(ch) : ch;
+    }
+    return ch;
   }
   return 0;
 }
@@ -100,7 +110,7 @@ void draw_keyboard() {
   tft.setCursor(0, 0);
   tft.setTextColor(TFT_CYAN);
   tft.print("Layout: ");
-  tft.print(isRussian ? "RU" : "EN");
+  tft.print(isSpecialMenu ? "SYM" : (isRussian ? "RU" : "EN"));
   tft.setCursor(100, 0);
   tft.setTextColor(TFT_YELLOW);
   tft.print("Shift: ");
@@ -110,21 +120,30 @@ void draw_keyboard() {
     int y = 15 + row * 20;
     int col_index = 0;
     int x = 0;
-    const char* line = isRussian ? layout_ru[row] : layout_en[row];
+    const char* line = isSpecialMenu ? layout_special[row] : (isRussian ? layout_ru[row] : layout_en[row]);
 
     for (int i = 0; line[i] != '\0'; i++) {
       if (line[i] == ' ') continue;
-
       char ch = line[i];
       String s;
 
       if (row == key_rows - 1) {
-        if (col_index == 0) s = "SHIFT";
-        else if (col_index == 1) s = "SPACE";
-        else if (col_index == 2) s = "BKSP";
-        else if (col_index == 3) s = "ENT";
+        if (isSpecialMenu) {
+          if (col_index == 0) s = "ABC";
+        } else {
+          if (col_index == 0) s = "↑";
+          else if (col_index == 1) s = "SPACE";
+          else if (col_index == 2) s = "←";
+          else if (col_index == 3) s = "⏎";
+          else if (col_index == 4) s = "L";
+          else if (col_index == 5) s = "SYM";
+        }
       } else {
-        s = shift ? String(get_shifted_char(ch)) : String(ch);
+        if (shift && !isSpecialMenu) {
+          if (isRussian) ch = get_shifted_char_ru(ch);
+          else ch = isAlpha(ch) ? toupper(ch) : ch;
+        }
+        s = String(ch);
       }
 
       bool selected = (row == selected_row && col_index == selected_col);
@@ -144,14 +163,12 @@ void draw_keyboard() {
     }
   }
 
-  // Вывод текста, введённого пользователем
   tft.fillRect(0, 135, 160, 20, TFT_BLACK);
   tft.setCursor(0, 135);
   tft.setTextColor(TFT_WHITE);
   tft.print("Text: ");
   tft.print(input_text);
 
-  // Отображение курсора (инверт символа под курсором)
   tft.setCursor(0, 145);
   for (int i = 0; i < input_text.length(); i++) {
     if (i == cursor_pos) {
@@ -169,85 +186,23 @@ void draw_keyboard() {
   }
 }
 
-void read_buttons() {
-  if (millis() - last_action < 150) return;
-
-  if (button(BTN_UP) && selected_row > 0) {
-    selected_row--;
-    if (selected_col >= max_cols[selected_row])
-      selected_col = max_cols[selected_row] - 1;
-    last_action = millis();
-  } else if (button(BTN_DOWN) && selected_row < key_rows - 1) {
-    selected_row++;
-    if (selected_col >= max_cols[selected_row])
-      selected_col = max_cols[selected_row] - 1;
-    last_action = millis();
-  } else if (button(BTN_LEFT)) {
-    if (button(BTN_RIGHT)) {
-      isRussian = !isRussian;
-    } else if (cursor_pos > 0) {
-      cursor_pos--;
-    } else if (selected_col > 0) {
-      selected_col--;
-    }
-    last_action = millis();
-  } else if (button(BTN_RIGHT)) {
-    if (cursor_pos < input_text.length()) {
-      cursor_pos++;
-    } else if (selected_col < max_cols[selected_row] - 1) {
-      selected_col++;
-    }
-    last_action = millis();
-  } else if (button(BTN_OK)) {
-    if (!ok_held) {
-      ok_hold_start = millis();
-      ok_held = true;
-    }
-
-    if (millis() - ok_hold_start > 300) {
-      perform_ok_action();
-      ok_hold_start = millis();
-    }
-  } else {
-    if (ok_held) {
-      perform_ok_action();
-      ok_held = false;
-    }
-  }
-}
-
 void perform_ok_action() {
   if (selected_row == key_rows - 1) {
-    if (selected_col == 0) shift = !shift;
-    else if (selected_col == 1) insert_char(' ');
-    else if (selected_col == 2) delete_char();
-    else if (selected_col == 3) {
-      Serial.println("Entered: " + input_text);  // <- Здесь переменная input_text записывается
-      input_text = "";
-      cursor_pos = 0;
+    if (isSpecialMenu) {
+      if (selected_col == 0) isSpecialMenu = false;
+    } else {
+      if (selected_col == 0) shift = !shift;
+      else if (selected_col == 1) insert_char(' ');
+      else if (selected_col == 2) delete_char();
+      else if (selected_col == 3) {
+        Serial.println("Entered: " + input_text);
+        keyboardActive = false;
+      }
+      else if (selected_col == 4) isRussian = !isRussian;
+      else if (selected_col == 5) isSpecialMenu = true;
     }
   } else {
     char ch = getCharAt(selected_row, selected_col);
     insert_char(ch);
   }
-  last_action = millis();
-}
-
-void setup() {
-  Serial.begin(115200);
-  pinMode(BTN_UP, INPUT_PULLUP);
-  pinMode(BTN_DOWN, INPUT_PULLUP);
-  pinMode(BTN_LEFT, INPUT_PULLUP);
-  pinMode(BTN_RIGHT, INPUT_PULLUP);
-  pinMode(BTN_OK, INPUT_PULLUP);
-
-  tft.init();
-  tft.setRotation(1);
-  tft.fillScreen(TFT_BLACK);
-  draw_keyboard();
-}
-
-void loop() {
-  read_buttons();
-  draw_keyboard();
 }
