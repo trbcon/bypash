@@ -1,38 +1,10 @@
 #include <../menu/menu.h>
 #include "../display/display.h"
+#include "../display/watch.h"
 
 TFT_eSPI tft = TFT_eSPI();
-RTC_DS3231 rtc;
 
-String NowTimeStr;
 
-void WatchInit() {
-  if (!rtc.begin()) {
-    Serial.println("RTC initialization failed");
-    
-    return;
-  } else {
-    isWatchOK = true;
-  }
-  if (rtc.lostPower()) {
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  }
-}
-
-void WatchDraw() {
-  DateTime now = rtc.now();
-  NowTimeStr = "";
-  // Форматирование часов
-  if(now.hour() < 10) NowTimeStr += "0";
-  NowTimeStr += String(now.hour()) + ":";
-
-  // Форматирование минут
-  if(now.minute() < 10) NowTimeStr += "0";
-  NowTimeStr += String(now.minute());
-
-  tft.setCursor((160 - tft.textWidth(NowTimeStr)) / 2, 0);
-  tft.println(NowTimeStr);
-}
 
 void displayInit() {
   tft.init();
@@ -48,7 +20,6 @@ void drawMenu() {
   tft.fillScreen(TFT_BLACK);
   tft.setCursor(0, 0);
   tft.setTextColor(TFT_CYAN, TFT_BLACK);
-  tft.println(currentMenu->name);
   // tft.setTextSize(2);
 
   for (int i = 0; i < maxVisibleItems; i++) {
@@ -72,6 +43,11 @@ void drawMenu() {
   }
 }
 
+
+void drawTopBar() {
+  WatchDraw();
+  tft.println(currentMenu->name);
+}
 
 
 // int hour = now.hour();
