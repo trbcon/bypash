@@ -6,5 +6,5 @@ extern TFT_eSPI tft;
 
 
 void displayInit();
-
 void drawMenu();
+void drawTopBar();

@@ -20,6 +20,7 @@ extern Menu RotationSettingsMenu;
 extern Menu WatchMenu;
 extern Menu ThemesMenu;
 extern Menu TADMenu;
+extern Menu SensorsMenu;
 
 
 extern Menu* currentMenu;

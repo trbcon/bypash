@@ -1,5 +1,6 @@
 // === include/buttons.h ===
 #pragma once
+#include "../display/keyboard.h"
 
 #define BTN_UP     12
 #define BTN_DOWN   13

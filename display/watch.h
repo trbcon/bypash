@@ -7,5 +7,4 @@ extern String NowTimeStr;
 extern bool isWatchOK;
 
 void WatchInit();
-
 void WatchDraw();

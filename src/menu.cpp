@@ -1,5 +1,6 @@
 #include "../menu/menu.h"
 
+// Menu init
 Menu mainMenu;
 Menu wifiMenu;
 Menu wifiSpammerMenu;
@@ -10,6 +11,7 @@ Menu RotationSettingsMenu;
 Menu WatchMenu;
 Menu ThemesMenu;
 Menu TADMenu;
+Menu SensorsMenu;
 
 
 Menu* currentMenu = &mainMenu;
@@ -18,14 +20,20 @@ int viewOffset = 0;
 const byte maxVisibleItems = 15;
 std::vector<Menu*> menuStack;
 
+
 void setupMenus() {
   mainMenu.name = "Main";
-  mainMenu.items = {"Wi-Fi", "Bluetooth", "Pins", "2.4", "Watch", "2", "3", "4", "5", "asd", "Settings"};
+  mainMenu.items = {"Wi-Fi", "Bluetooth", "Pins", "Watch", "Sensors", "Music Player", "4", "5", "asd", "Settings"};
   mainMenu.submenus["Wi-Fi"] = &wifiMenu;
   mainMenu.submenus["Bluetooth"] = &bluetoothMenu;
   mainMenu.submenus["Wi-Fi spammer"] = &wifiSpammerMenu;
   mainMenu.submenus["Watch"] = &WatchMenu;
+  mainMenu.submenus["Sensors"] = &SensorsMenu;
+  
+
   mainMenu.submenus["Settings"] = &settingsMenu;
+
+
 
   wifiMenu.name = "Wi-Fi";
   wifiMenu.items = {"Wi-Fi spammer", "Wi-Fi scanner", "W", "back"};
@@ -40,11 +48,18 @@ void setupMenus() {
   WatchMenu.name = "Watch";
   WatchMenu.items = {"Stopwatch", "Timer", "back"};
 
+  SensorsMenu.name = "Sensors";
+  SensorsMenu.items = {"Termometers", "Radio tags", "Antennes", "back"};
+
+
+
+
+
+  //___
   settingsMenu.name = "Settings";
   settingsMenu.items = {"Display", "Themes", "Time and Data", "back"};
   settingsMenu.submenus["Display"] = &DisplaySettingsMenu;
   settingsMenu.submenus["Themes"] = &ThemesMenu;
-  settingsMenu.submenus["Time and Data"] = &TADMenu;
 
   ThemesMenu.name = "Themes";
   ThemesMenu.items = {"Dark(default)", "Light", "back"};
@@ -55,4 +70,8 @@ void setupMenus() {
 
   RotationSettingsMenu.name = "Rotation";
   RotationSettingsMenu.items = {"Vertical", "Horizontal", "back"};
+  //___
+
+
+
 }

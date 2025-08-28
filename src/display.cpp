@@ -29,23 +29,26 @@ void drawMenu() {
     int y = (i + 1)* 8;
 
     if (menuIndex == selectedItem) {
-      tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+      tft.setTextColor(TFT_PINK, TFT_BLACK);
       tft.setCursor(0, y);
       tft.print("> ");
     } else {
+      tft.setTextColor(TFT_WHITE, TFT_BLACK);
       tft.setCursor(0, y);
       tft.print("  ");
     }
 
     tft.setCursor(10, y);
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.print(currentMenu->items[menuIndex]);
   }
 }
 
 
 void drawTopBar() {
+  tft.setTextSize(1);
   WatchDraw();
+  tft.setCursor(0, 0);
+  tft.setTextColor(TFT_PINK, TFT_BLACK);
   tft.println(currentMenu->name);
 }
 

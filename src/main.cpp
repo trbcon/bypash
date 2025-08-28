@@ -13,6 +13,7 @@
 #include "../display/keyboard.h"
 #include "../display/watch.h"
 
+#include "../applications/stopwatch.h"
 
 #include "../sensors/pins.h"
 #include "../sensors/watch.h"
@@ -75,13 +76,6 @@ void startScreen() {
   tft.drawLine(LX2, LY3+1, LX3, LY3+1, TFT_WHITE);
 }
 
-void StopwatchDraw() {
-  tft.fillRect(0, 40, 160, 30, TFT_BLACK);
-  tft.setCursor(10, 40);
-  TimeResult time = StartStopwatch();
-  tft.printf("%02lu.%03lu сек", time.sec, time.ms);
-  // добавить проверку на нажатие кнопок(ок для запуска, влево для выхода)
-}
 
 void handleOk() {
   String item = currentMenu->items[selectedItem];
@@ -117,9 +111,12 @@ void executeAction(String label) {
   } else if (String(currentMenu->name) == "Wi-Fi" && label == "Wi-Fi scanner"){
     // WiFiScanner();
   } else if (String(currentMenu->name) == "Watch" && label == "Stopwatch"){
-    startMillis = millis();
-    isStopwatchRunning = true;
-    isMenu = false;
+    // startMillis = millis();
+    // isStopwatchRunning = true;
+    // isMenu = false;
+    // isMenu = false;
+    stopwatch_enter();
+    // drawStopwatchMenu();
   } else if (String(currentMenu->name) == "Pins") {
     isPinsMenu = true;
   } else {
@@ -144,19 +141,20 @@ void selectMenu(bool &isSomething) {
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   displayInit();
+  WatchInit();
 
   startScreen();
 
   setupMenus();
-  drawMenu();
   ButtonSetup();
-
   setPins();
+
+  drawMenu();
+
   // printPins();
 
-  WatchInit();
 
   // wsl_bypass_init();
   // WiFi.mode(WIFI_STA);
@@ -170,7 +168,7 @@ void setup() {
 
 void loop() {
   ButtonUpdate();
-  WatchDraw();
+  drawTopBar();
   
   if (Serial.available()) {
     String command = Serial.readStringUntil('\n');
@@ -194,19 +192,37 @@ void loop() {
       } else if (selectedItem >= viewOffset + maxVisibleItems) {
         viewOffset = selectedItem - maxVisibleItems + 1;
       }
-
-      drawMenu();
-    } else if (isStopwatchRunning){
-      if (command == "ok") {
-        isStopwatchRunning = false;
-        isMenu = true;
+      if (isMenu) drawMenu();      
+    } else if (sw_active) { // Секундомер
+      if (command == "start") {
+        if (!sw_running) {
+          sw_startTime = millis() - sw_elapsed;
+          sw_running = true;
+        }
+      } else if (command == "stop") {
+        if (sw_running) {
+          sw_elapsed = millis() - sw_startTime;
+          sw_running = false;
+        }
+      } else if (command == "reset") {
+        sw_running = false;
+        sw_elapsed = 0;
       }
+      if (command == "up"){
+        stopwatch_menuUp();
+      } else if (command == "down") {
+        stopwatch_menuDown();
+      } else if (command == "ok") {
+        stopwatch_menuOk();
+      }
+
+      if (sw_active) drawStopwatchMenu();
     }
   }
 
   //Stopwatch(секундомер ебаный) (надо переписать его будет)
-  if (isStopwatchRunning) {
-    StopwatchDraw();
+  if (sw_running) {
+    stopwatch_update();
   }
 
   //notifications
