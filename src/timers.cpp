@@ -3,22 +3,22 @@
 
 
 
-bool TimerMenuActive = true;
+bool TimerMenuActive = false;
 bool TimerActive = false;
 bool isEditingTime = false;
 
 int TimerMenuIndex = 0;
 int TimerIndexX = 0;
 
-int hour = 0;
-int min = 0;
-int sec = 0;
+int HourTimer = 0;
+int MinuteTimer = 0;
+int SecTimer = 0;
 
 int timeSec = 0;
 
-unsigned long MilTimerStart = 0;
+unsigned long MillisecTimerStart = 0;
 
-const char* sw_menuItems[] = {"Start", "Stop", "Restart", "Exit"};
+const char* sw_menuTimerItems[] = {"Start", "Stop", "Restart", "Exit"};
 
 
 void TimerMenuOk() {
@@ -34,8 +34,8 @@ void TimerMenuOk() {
             TimerActive = false;
             break;
         case 3:
-            timeSec = (hour * 60 + min) * 60 + sec;
-            MilTimerStart = millis();
+            timeSec = (HourTimer * 60 + MinuteTimer) * 60 + SecTimer;
+            MillisecTimerStart = millis();
             TimerActive = true;
             break;
         case 4:
@@ -49,9 +49,9 @@ void TimerMenuUp() {
     if (!isEditingTime) {
         TimerMenuIndex = (TimerMenuIndex == 0) ? 4 : TimerMenuIndex - 1;
     } else {
-        if (TimerIndexX == 0) hour = (hour + 1) % 100;
-        else if (TimerIndexX == 1) min = (min + 1) % 60;
-        else if (TimerIndexX == 2) sec = (sec + 1) % 60;
+        if (TimerIndexX == 0) HourTimer = (HourTimer + 1) % 100;
+        else if (TimerIndexX == 1) MinuteTimer = (MinuteTimer + 1) % 60;
+        else if (TimerIndexX == 2) SecTimer = (SecTimer + 1) % 60;
     }
 }
 
@@ -59,9 +59,9 @@ void TimerMenuDown() {
     if (!isEditingTime) {
         TimerMenuIndex = (TimerMenuIndex == 4) ? 0 : TimerMenuIndex + 1;
     } else {
-        if (TimerIndexX == 0) hour = (hour == 0) ? 99 : hour - 1;
-        else if (TimerIndexX == 1) min = (min == 0) ? 59 : min - 1;
-        else if (TimerIndexX == 2) sec = (sec == 0) ? 59 : sec - 1;
+        if (TimerIndexX == 0) HourTimer = (HourTimer == 0) ? 99 : HourTimer - 1;
+        else if (TimerIndexX == 1) MinuteTimer = (MinuteTimer == 0) ? 59 : MinuteTimer - 1;
+        else if (TimerIndexX == 2) SecTimer = (SecTimer == 0) ? 59 : SecTimer - 1;
     }
 }
 
@@ -80,24 +80,25 @@ void TimerMenuRight() {
 
 
 void SetTimer() {
-    timeSec = (hour * 60 + min) * 60 + sec;
-    MilTimerStart = millis();
+    timeSec = (HourTimer * 60 + MinuteTimer) * 60 + SecTimer;
+    MillisecTimerStart = millis();
+    TimerActive = true;
 }
 
 
 void TimerUpdate() {
     if (!TimerActive) return;
 
-    if (millis() - MilTimerStart >= 1000) {
-        MilTimerStart = millis();
+    if (millis() - MillisecTimerStart >= 1000) {
+        MillisecTimerStart = millis();
         if (timeSec > 0) timeSec--;
     }
 
-    hour = timeSec / 3600;
-    min = (timeSec % 3600) / 60;
-    sec = timeSec % 60;
+    HourTimer = timeSec / 3600;
+    MinuteTimer = (timeSec % 3600) / 60;
+    SecTimer = timeSec % 60;
 
-    TimerUI();
+    // TimerUI();
 
     if (timeSec == 0) {
         TimerEnd();
@@ -120,7 +121,7 @@ void TimerUI() {
     tft.fillRect(10, 10, 160, 30, TFT_BLACK);
     tft.setTextColor(TFT_PINK);
     tft.setTextSize(2);
-    tft.printf("%02d:%02d:%02d", hour, min, sec);
+    tft.printf("%02d:%02d:%02d", HourTimer, MinuteTimer, SecTimer);
 }
 
 void TimerMenuUI() {
@@ -132,18 +133,18 @@ void TimerMenuUI() {
     tft.setCursor(10, 10);
     if (isEditingTime && TimerMenuIndex == 0) {
         if (TimerIndexX == 0) tft.setTextColor(TFT_PINK);
-        tft.printf("%02d", hour);
+        tft.printf("%02d", HourTimer);
         tft.setTextColor(TFT_WHITE);
         tft.print(":");
         if (TimerIndexX == 1) tft.setTextColor(TFT_PINK);
-        tft.printf("%02d", min);
+        tft.printf("%02d", MinuteTimer);
         tft.setTextColor(TFT_WHITE);
         tft.print(":");
         if (TimerIndexX == 2) tft.setTextColor(TFT_PINK);
-        tft.printf("%02d", sec);
+        tft.printf("%02d", SecTimer);
         tft.setTextColor(TFT_WHITE);
     } else {
-        tft.printf("%02d:%02d:%02d", hour, min, sec);
+        tft.printf("%02d:%02d:%02d", HourTimer, MinuteTimer, SecTimer);
     }
 
     // меню
@@ -156,6 +157,6 @@ void TimerMenuUI() {
             tft.setTextColor(TFT_WHITE);
             tft.print("  ");
         }
-        tft.print(sw_menuItems[i - 1]);
+        tft.print(sw_menuTimerItems[i - 1]);
     }
 }

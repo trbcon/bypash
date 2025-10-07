@@ -20,8 +20,13 @@
 
 #include "../timers/timers.h"
 
-#include "../wireless/wi-fi.h"
-#include "../wireless/bluetooth.h"
+#include "../wireless/wifi/wifi.h"
+#include "../wireless/wifi/wifi_deauth_sender.h"
+#include "../wireless/wifi/wifi_mode_selector.h"
+#include "../wireless/wifi/wifi_sniffer.h"
+#include "../wireless/wifi/wifi_sta_selector.h"
+
+#include "../wireless/bt/bluetooth.h"
 
 #include "../wired/usb.h"
 
@@ -110,15 +115,17 @@ void handleBack() {
 void executeAction(String label) {
   if (String(currentMenu->name) == "Wi-Fi spammer" && label == "Start attack") {
     // StartWiFiAttack();
-  } else if (String(currentMenu->name) == "Wi-Fi" && label == "Wi-Fi scanner"){
+  } else if (String(currentMenu->name) == "Wi-Fi" && label == "Wi-Fi scanner") {
     // WiFiScanner();
-  } else if (String(currentMenu->name) == "Watch" && label == "Stopwatch"){
+  } else if (String(currentMenu->name) == "Watch" && label == "Stopwatch") {
     // startMillis = millis();
     // isStopwatchRunning = true;
     // isMenu = false;
     // isMenu = false;
     stopwatch_enter();
     // drawStopwatchMenu();
+  } else if (String(currentMenu->name) == "Watch" && label == "Timer") {
+    TimerActive = true;
   } else if (String(currentMenu->name) == "Pins") {
     isPinsMenu = true;
   } else if (String(currentMenu->name) == "Music Player") {
@@ -142,6 +149,25 @@ void selectMenu(bool &isSomething) {
   
   isSomething = true;
 }
+
+
+void updateAll() {
+  TimerUpdate();
+
+  if (sw_running) {
+    stopwatch_update();
+  }
+
+  //notifications
+  if (isNotifications) {
+    notificationsMenu();
+  }
+
+  // if (isPinsMenu) {
+    
+  // }
+}
+
 
 
 void setup() {
@@ -196,6 +222,7 @@ void loop() {
       } else if (selectedItem >= viewOffset + maxVisibleItems) {
         viewOffset = selectedItem - maxVisibleItems + 1;
       }
+
       if (isMenu) drawMenu();      
     } else if (sw_active) { // Секундомер
       if (command == "start") {
@@ -220,27 +247,28 @@ void loop() {
         stopwatch_menuOk();
       }
 
-      if (sw_active) drawStopwatchMenu();
+      if (sw_active) drawStopwatchMenu(); // sw_active это меню, а sw_running это сам секундомер
+    } else if (TimerMenuActive) {
+      if (command == "up") {
+        TimerMenuUp();
+      } else if (command == "down") {
+        TimerMenuDown();
+      } else if (command == "ok") {
+        TimerMenuOk();
+      } else if (command == "back") {
+        handleBack();
+      } else if (command == "right") {
+        TimerMenuRight();
+      } else if (command == "left") {
+        TimerMenuLeft();
+      }
     }
   }
 
   
+  updateAll();
 
-  // if (isPinsMenu) {
-    
-  // }
 }
 
-void updateAll() {
-  TimerUpdate();
-  if (sw_running) {
-    stopwatch_update();
-  }
-
-  //notifications
-  if (isNotifications) {
-    notificationsMenu();
-  }
-}
 
 

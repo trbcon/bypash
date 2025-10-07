@@ -10,16 +10,16 @@ extern int TimerMenuIndex;
 extern int TimerIndexX;
 
 
-extern int hour;
-extern int min;
-extern int sec;
+extern int HourTimer;
+extern int MinuteTimer;
+extern int SecTimer;
 
 extern int timeSec;
 
-extern int MilTimerStart;
+extern unsigned long MillisecTimerStart;
 
 
-extern const char* sw_menuItems[];
+extern const char* sw_menuTimerItems[];
 
 
 void SetTimer();
