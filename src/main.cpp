@@ -119,6 +119,8 @@ void executeAction(String label) {
     // drawStopwatchMenu();
   } else if (String(currentMenu->name) == "Pins") {
     isPinsMenu = true;
+  } else if (String(currentMenu->name) == "Music Player") {
+    //
   } else {
     Serial.print("Выбран пункт: ");
     Serial.println(label);
