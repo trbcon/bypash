@@ -18,6 +18,8 @@
 #include "../sensors/pins.h"
 #include "../sensors/watch.h"
 
+#include "../timers/timers.h"
+
 #include "../wireless/wi-fi.h"
 #include "../wireless/bluetooth.h"
 
@@ -222,7 +224,15 @@ void loop() {
     }
   }
 
-  //Stopwatch(секундомер ебаный) (надо переписать его будет)
+  
+
+  // if (isPinsMenu) {
+    
+  // }
+}
+
+void updateAll() {
+  TimerUpdate();
   if (sw_running) {
     stopwatch_update();
   }
@@ -231,12 +241,6 @@ void loop() {
   if (isNotifications) {
     notificationsMenu();
   }
-
-  // if (isPinsMenu) {
-    
-  // }
 }
-
-
 
 
