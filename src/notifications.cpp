@@ -1,54 +1,73 @@
+#include "../display/display.h"
+#include "../buttons/buttons.h"
 #include "../notifications/notifications.h"
-#include <TFT_eSPI.h>
 
-extern TFT_eSPI tft;
+static int notifSelected = 0;
+static int notifScroll = 0;
+const int maxLines = 5;
 
 std::vector<Notification> notifications;
 
-void setNotification(const std::string& strNotification) {
-    Notification n;
-    n.text = strNotification;
-    notifications.push_back(n);
+void addNotification(const String& text, NotificationType type) {
+    notifications.push_back({text, type, millis(), true});
+    if (notifications.size() > 50) notifications.erase(notifications.begin());
 }
 
-void clearNotifications() {
+void clearAllNotifications() {
     notifications.clear();
+    notifSelected = 0;
+    notifScroll = 0;
 }
 
-// void printNotifications() {
-//     tft.setTextColor(TFT_WHITE, TFT_BLACK);
-//     int y = 0;
-//     unsigned long now = millis();
-
-//     std::vector<Notification> stillActive;
-
-//     for (auto& notif : notifications) {
-//         if (now - notif.startTime < 4000) {
-//             tft.setCursor(80, 9 + y * 8);
-//             tft.print(notif.text.c_str());
-//             stillActive.push_back(notif);
-//             y++;
-//         }
-//     }
-
-//     notifications = stillActive;
-// }
-
-
-void printMiniNotification() {
-    Serial.print(notifications[notifications.size() - 1].text.c_str());
-
-}
-
-void notificationsMenu() {
-    if (notifications.size() < 15) {
-        for(int i = 0; i < notifications.size(); i++){
-            Serial.print(notifications[i].text.c_str());
-        }
+void removeNotification(int index) {
+    if (index >= 0 && index < notifications.size()) {
+        notifications.erase(notifications.begin() + index);
+        if (notifSelected >= notifications.size()) notifSelected = notifications.size() - 1;
+        if (notifSelected < 0) notifSelected = 0;
+        if (notifScroll > notifSelected) notifScroll = notifSelected;
+        if (notifScroll < 0) notifScroll = 0;
     }
 }
 
-void deleteMiniNotification() {
-    tft.fillRect(80, 9, 80, 8, TFT_BLACK);
-    
+void showNotificationsMenu() {
+    tft.fillScreen(TFT_BLACK);
+    int total = notifications.size();
+    if (notifSelected >= total && total > 0) notifSelected = total - 1;
+    if (notifSelected < 0) notifSelected = 0;
+    if (notifScroll > notifSelected) notifScroll = notifSelected;
+    if (notifScroll < notifSelected - maxLines + 1) notifScroll = notifSelected - maxLines + 1;
+    if (notifScroll < 0) notifScroll = 0;
+
+    for (int i = 0; i < maxLines; ++i) {
+        int idx = notifScroll + i;
+        if (idx >= total) break;
+        const auto& n = notifications[idx];
+        uint16_t color = TFT_WHITE;
+        if (n.type == NotificationType::WARNING) color = TFT_YELLOW;
+        if (n.type == NotificationType::ERROR) color = TFT_RED;
+        tft.setCursor(0, i * 16);
+        tft.setTextColor(idx == notifSelected ? TFT_CYAN : color);
+        tft.print(idx == notifSelected ? "> " : "  ");
+        tft.println(n.text);
+    }
+    tft.setCursor(0, maxLines * 16 + 2);
+    tft.setTextColor(TFT_DARKGREY);
+    tft.println("[OK] удалить  [LEFT] все  [BACK] выход");
+}
+
+void handleNotificationsMenuInput(const char* btnName) {
+    int total = notifications.size();
+
+    if (strcmp(btnName, "UP") == 0 && notifSelected > 0) notifSelected--;
+    if (strcmp(btnName, "DOWN") == 0 && notifSelected < total - 1) notifSelected++;
+    if (strcmp(btnName, "OK") == 0 && total > 0) {
+        removeNotification(notifSelected);
+    }
+    if (strcmp(btnName, "LEFT") == 0) {
+        clearAllNotifications();
+    }
+    if (strcmp(btnName, "BACK") == 0) {
+        isNotifications = false; // Выход из меню уведомлений
+        isMenu = true;           // Возврат в главное меню
+    }
 }

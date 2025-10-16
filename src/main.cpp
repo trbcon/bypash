@@ -84,6 +84,29 @@ void startScreen() {
 }
 
 
+void handleMenuInput() {
+    ButtonEvent btn = readButton();
+    int itemsCount = currentMenu->items.size();
+
+    if (btn == ButtonEvent::UP && selectedItem > 0) {
+        selectedItem--;
+        if (selectedItem < viewOffset) viewOffset = selectedItem;
+    }
+    if (btn == ButtonEvent::DOWN && selectedItem < itemsCount - 1) {
+        selectedItem++;
+        if (selectedItem >= viewOffset + maxVisibleItems)
+            viewOffset = selectedItem - maxVisibleItems + 1;
+    }
+    if (btn == ButtonEvent::OK) {
+        handleOk();
+    }
+    if (btn == ButtonEvent::LEFT) {
+        handleBack();
+    }
+}
+
+
+
 void handleOk() {
   String item = currentMenu->items[selectedItem];
 
@@ -138,17 +161,14 @@ void executeAction(String label) {
 // -------------------------------
 
 
-void selectMenu(bool &isSomething) {
-  isMenu = false;
-  // isNotifications = false;
-  isStopwatchRunning = false;
-  isPinsMenu = false;
-  isWatchOK = false;
-
-
-  
-  isSomething = true;
-}
+// void selectMenu(bool &isSomething) {
+//   isMenu = false;
+//   // isNotifications = false;
+//   isStopwatchRunning = false;
+//   isPinsMenu = false;
+//   isWatchOK = false;
+//   isSomething = true;
+// }
 
 
 void updateAll() {
@@ -160,7 +180,7 @@ void updateAll() {
 
   //notifications
   if (isNotifications) {
-    notificationsMenu();
+    showNotificationsMenu();
   }
 
   // if (isPinsMenu) {
@@ -197,7 +217,7 @@ void setup() {
 }
 
 void loop() {
-  ButtonUpdate();
+  // ButtonUpdate();
   drawTopBar();
   
   if (Serial.available()) {
@@ -266,7 +286,13 @@ void loop() {
   }
 
   
-  updateAll();
+  if (isNotifications) {
+        showNotificationsMenu();
+        handleNotificationsMenuInput();
+    } else if (isMenu) {
+        drawMenu();
+        handleMenuInput();
+    }
 
 }
 
