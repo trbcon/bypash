@@ -55,19 +55,37 @@ void showNotificationsMenu() {
     tft.println("[OK] удалить  [LEFT] все  [BACK] выход");
 }
 
-void handleNotificationsMenuInput(const char* btnName) {
-    int total = notifications.size();
 
-    if (strcmp(btnName, "UP") == 0 && notifSelected > 0) notifSelected--;
-    if (strcmp(btnName, "DOWN") == 0 && notifSelected < total - 1) notifSelected++;
-    if (strcmp(btnName, "OK") == 0 && total > 0) {
-        removeNotification(notifSelected);
-    }
-    if (strcmp(btnName, "LEFT") == 0) {
-        clearAllNotifications();
-    }
-    if (strcmp(btnName, "BACK") == 0) {
+
+void handleNotificationsMenuInput() {
+    // int total = notifications.size();
+
+    // if (strcmp(btnName, "UP") == 0 && notifSelected > 0) notifSelected--;
+    // if (strcmp(btnName, "DOWN") == 0 && notifSelected < total - 1) notifSelected++;
+    // if (strcmp(btnName, "OK") == 0 && total > 0) {
+    //     removeNotification(notifSelected);
+    // }
+    // if (strcmp(btnName, "LEFT") == 0) {
+    //     clearAllNotifications();
+    // }
+    // if (strcmp(btnName, "BACK") == 0) {
+    //     isNotifications = false; // Выход из меню уведомлений
+    //     isMenu = true;           // Возврат в главное меню
+    // } staraya huinya
+
+    // new buttons upd
+
+    ButtonEvent btn = readButton();
+
+    if (btn == ButtonEvent::UP && notifSelected > 0) notifSelected--;
+    if (btn == ButtonEvent::DOWN && notifSelected < total - 1) notifSelected++;
+    if (btn == ButtonEvent::OK && total > 0) removeNotification(notifSelected);
+    if (btn == ButtonEvent::LEFT) {
         isNotifications = false; // Выход из меню уведомлений
-        isMenu = true;           // Возврат в главное меню
+        isMenu = true;           // Возврат в главное меню        
     }
+    if (btn == ButtonEvent::RIGHT) clearAllNotifications();
+
+
+
 }

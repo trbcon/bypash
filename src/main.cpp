@@ -287,12 +287,12 @@ void loop() {
 
   
   if (isNotifications) {
-        showNotificationsMenu();
-        handleNotificationsMenuInput();
-    } else if (isMenu) {
-        drawMenu();
-        handleMenuInput();
-    }
+    showNotificationsMenu();
+    handleNotificationsMenuInput();
+  } else if (isMenu) {
+    drawMenu();
+    handleMenuInput();
+  }
 
 }
 
